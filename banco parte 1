@@ -1,0 +1,83 @@
+//Codigo del menu
+  try{ 
+            String o = jtxtfOpcion.getText();
+        int opcion = Integer.parseInt(o);
+
+        switch(opcion){
+            case 1:
+                DepositoJFrame deposito = new DepositoJFrame();
+                deposito.show();
+                break;
+            case 2:
+                RetiroJFrame retiro = new RetiroJFrame();
+                retiro.show();
+                break;
+            case 3:
+                SaldoJFrame saldo = new SaldoJFrame();
+                saldo.show();
+                break;
+            case 4:
+                JOptionPane.showMessageDialog(null, "Cerrando sesión, vuelva pronto...");
+                this.dispose();
+                break;
+            default:
+                JOptionPane.showMessageDialog(null, "Opcion no valida");
+                break;
+        }
+        jtxtfOpcion.setText("");
+        } catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Error: " + e);
+        }
+    }                                           
+// Codigo del deposito
+ private void jbtnDepositarActionPerformed(java.awt.event.ActionEvent evt) {                                              
+        // TODO add your handling code here:
+        Connection con;
+        Conexion conn = new Conexion();
+        try{
+            con = conn.getConnection();
+            PreparedStatement ps = con.prepareStatement("UPDATE cuenta SET saldo=saldo + ? WHERE id = 1");
+            ps.setString(1, jtxtfCantidad.getText());
+
+            int res = ps.executeUpdate();
+
+            if (res > 0) {
+                JOptionPane.showMessageDialog(null,  "Deposito exitoso");
+            } else {
+                JOptionPane.showMessageDialog(null,  "Error al depositar");
+            }
+            
+            jtxtfCantidad.setText("");
+
+            con.close();
+
+        } catch (Exception e){
+            JOptionPane.showMessageDialog(null, "Error: " + e);
+        }
+    }
+//Codigo del retiro
+private void jbtnRetirarActionPerformed(java.awt.event.ActionEvent evt) {                                            
+        // TODO add your handling code here:
+         Connection con;
+        Conexion conn = new Conexion();
+        try{
+            con = conn.getConnection();
+            PreparedStatement ps = con.prepareStatement("UPDATE cuenta SET saldo=saldo - ? WHERE id = 1");
+            ps.setString(1, jtxtfCantidad.getText());
+
+            int res = ps.executeUpdate();
+
+            if (res > 0){
+                JOptionPane.showMessageDialog(null,  "Retiro exitoso");
+            } else {
+                JOptionPane.showMessageDialog(null,  "Error al retirar");
+            }
+            
+            jtxtfCantidad.setText("");
+
+            con.close();
+
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Error: " + e);
+        }
+    }
